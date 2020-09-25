@@ -9,14 +9,18 @@ class NavBar extends Component {
 
         this.state = {
             items: [
-                { name: "Listar Tarefas", href: "/" },
-                { name: "Nova Tarefa", href: "/form" }
+                { name: "Listar Tarefas", href: "/", active: true},
+                { name: "Nova Tarefa", href: "/form", active: false }
             ]
         }
+
+        this.onClickHandle = this.onClickHandle.bind(this);
     }
 
-    onClickHandle(item) {
-        alert(item.name);
+    onClickHandle(itemClicked) {
+        const items = [...this.state.items]
+        items.forEach(item => item === itemClicked ? item.active = true : item.active = false);
+        this.setState({ items })
     }
 
     render() {
