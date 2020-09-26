@@ -11,7 +11,8 @@ class TaskListTable extends Component {
             tasks: []
         }
 
-        this.onDeleteHandler = this.onDeleteHandler.bind(this)
+        this.onDeleteHandler = this.onDeleteHandler.bind(this);
+        this.onStatusChange = this.onStatusChange.bind(this);
     }
 
     render() {
@@ -20,7 +21,10 @@ class TaskListTable extends Component {
                     <table className="table table-striped">
                         <TableHeader />
                         {this.state.tasks.length > 0 ?
-                            <TableBody tasks={this.state.tasks} onDelete={this.onDeleteHandler}/>
+                            <TableBody tasks={this.state.tasks} 
+                                        onDelete={this.onDeleteHandler}
+                                        onStatusChange={this.onStatusChange}
+                                        />
                             :
                             <EmptyTableBody />
                         }
@@ -47,6 +51,13 @@ class TaskListTable extends Component {
         }
         
     }
+
+    onStatusChange(task){
+        task.done = !task.done;
+        TaskService.save(task);
+        this.listTasks();
+    }
+
 }
 
 const TableHeader = () => {
@@ -67,7 +78,12 @@ const TableBody = (props) => {
         <tbody>
         {props.tasks.map(task => 
             <tr key={task.id}>
-                <td><input type="checkbox" checked={task.done}/></td>
+                <td>
+                    <input type="checkbox"
+                        checked={task.done}
+                        onChange={(event) => props.onStatusChange(task)}
+                        />
+                </td>
                 <td>{task.description}</td>
                 <td>{task.WhenToDo}</td>
                 <td>
