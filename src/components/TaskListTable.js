@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import TaskService from '../api/TaskService';
+import "react-toastify/dist/ReactToastify.css";
 
 class TaskListTable extends Component {
     constructor(props){
@@ -14,10 +16,13 @@ class TaskListTable extends Component {
 
     render() {
         return (
-                <table className="table table-striped">
-                    <TableHeader />
-                    <TableBody tasks={this.state.tasks} onDelete={this.onDeleteHandler}/>
-                </table>
+                <>
+                    <table className="table table-striped">
+                        <TableHeader />
+                        <TableBody tasks={this.state.tasks} onDelete={this.onDeleteHandler}/>
+                    </table>
+                    <ToastContainer autoClose={1500} />
+                </>
         );
     }
 
@@ -30,8 +35,12 @@ class TaskListTable extends Component {
     }
 
     onDeleteHandler(id){
-        TaskService.delete(id);
-        this.listTasks();
+        if (window.confirm("Deseja mesmo remover essa tarefa?")){
+            TaskService.delete(id);
+            this.listTasks();
+            toast.success("Tarefa removida!", { position: toast.POSITION.BOTTOM_LEFT })
+        }
+        
     }
 }
 
