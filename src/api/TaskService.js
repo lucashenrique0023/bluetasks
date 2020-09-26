@@ -17,7 +17,6 @@ class TaskService {
 
     save(task){
         this.tasks = this.tasks.map(t => t.id !== task.id ? t : task);
-        console.log(task);
     }
 }
 
