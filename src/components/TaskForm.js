@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import TaskService from '../api/TaskService';
 
 class TaskForm extends Component {
 
@@ -10,7 +12,8 @@ class TaskForm extends Component {
                 id: 0,
                 description: "",
                 whenToDo: ""
-            }
+            },
+            redirect: false
         }
 
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -19,6 +22,8 @@ class TaskForm extends Component {
 
     onSubmitHandler(event){
         event.preventDefault(); // Previne o refresh da tela
+        TaskService.save(this.state.task);
+        this.setState({ redirect: true });
     }
 
     onInputChangeHandler(event) {
@@ -29,6 +34,11 @@ class TaskForm extends Component {
     }
 
     render() {
+
+        if (this.state.redirect){
+            return <Redirect to="/" />
+        }
+
         return (
             <div>
                 <h1>Cadastro da Tarefa</h1>

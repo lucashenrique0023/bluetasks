@@ -85,7 +85,7 @@ const TableBody = (props) => {
                         />
                 </td>
                 <td>{task.done ? <s>{task.description}</s> : task.description}</td>
-                <td>{task.done ? <s>{task.WhenToDo}</s> : task.WhenToDo}</td>
+                <td>{task.done ? <s>{task.whenToDo}</s> : task.whenToDo}</td>
                 <td>
                     <input type="button" className="btn btn-primary" value="Editar"/>
                     &nbsp;
