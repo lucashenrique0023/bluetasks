@@ -2,20 +2,28 @@ import React, { Component } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import TaskService from '../api/TaskService';
 import "react-toastify/dist/ReactToastify.css";
+import { Redirect } from 'react-router-dom';
 
 class TaskListTable extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            tasks: []
+            tasks: [],
+            editId: 0
         }
 
         this.onDeleteHandler = this.onDeleteHandler.bind(this);
         this.onStatusChange = this.onStatusChange.bind(this);
+        this.onEditHandler = this.onEditHandler.bind(this);
     }
 
     render() {
+
+        if (this.state.editId !== 0){
+            return <Redirect to={`form/${this.state.editId}`} />
+        }
+
         return (
                 <>
                     <table className="table table-striped">
@@ -23,6 +31,7 @@ class TaskListTable extends Component {
                         {this.state.tasks.length > 0 ?
                             <TableBody tasks={this.state.tasks} 
                                         onDelete={this.onDeleteHandler}
+                                        onEdit={this.onEditHandler}
                                         onStatusChange={this.onStatusChange}
                                         />
                             :
@@ -50,6 +59,10 @@ class TaskListTable extends Component {
             toast.success("Tarefa removida!", { position: toast.POSITION.BOTTOM_LEFT })
         }
         
+    }
+
+    onEditHandler(id){
+        this.setState({ editId: id})
     }
 
     onStatusChange(task){
@@ -87,7 +100,11 @@ const TableBody = (props) => {
                 <td>{task.done ? <s>{task.description}</s> : task.description}</td>
                 <td>{task.done ? <s>{task.whenToDo}</s> : task.whenToDo}</td>
                 <td>
-                    <input type="button" className="btn btn-primary" value="Editar"/>
+                    <input type="button" 
+                            className="btn btn-primary"
+                            value="Editar"
+                            onClick={() => props.onEdit(task.id)}
+                            />
                     &nbsp;
                     <input type="button" 
                             className="btn btn-danger" 

@@ -33,6 +33,14 @@ class TaskForm extends Component {
         this.setState(prevState => ({ task: {...prevState.task, [field]: value } }))
     }
 
+    componentDidMount(){
+        const taskId = this.props.match.params.id;
+        if (taskId) {
+            const task = TaskService.load(~~taskId);
+            this.setState({ task : task })
+        }
+    }
+
     render() {
 
         if (this.state.redirect){
@@ -49,6 +57,7 @@ class TaskForm extends Component {
                                 className="form-control" 
                                 name="description" 
                                 placeholder="Digite a descricao"
+                                value={this.state.task.description}
                                 onChange={this.onInputChangeHandler} />
                     </div>
                     <div className="form-group">
@@ -57,6 +66,7 @@ class TaskForm extends Component {
                                 className="form-control" 
                                 name="whenToDo" 
                                 placeholder="Informe a data"
+                                value={this.state.task.whenToDo}
                                 onChange={this.onInputChangeHandler} />
                     </div>
                     <button type="submit" className="btn btn-primary">Cadastrar</button>
