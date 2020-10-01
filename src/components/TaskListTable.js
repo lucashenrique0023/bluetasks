@@ -3,6 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import TaskService from '../api/TaskService';
 import "react-toastify/dist/ReactToastify.css";
 import { Redirect } from 'react-router-dom';
+import Alert from './Alert';
 
 class TaskListTable extends Component {
     constructor(props){
@@ -19,13 +20,13 @@ class TaskListTable extends Component {
     }
 
     render() {
-
         if (this.state.editId !== 0){
             return <Redirect to={`form/${this.state.editId}`} />
         }
 
         return (
                 <>
+                    <Alert message="Este e um alerta de teste"/>
                     <table className="table table-striped">
                         <TableHeader />
                         {this.state.tasks.length > 0 ?
