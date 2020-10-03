@@ -93,7 +93,7 @@ class TaskListTable extends Component {
     }
 
     onEditHandler(id){
-        this.setState({ editId: id})
+        this.setState({editId: id})
     }
 
     onStatusChange(task){
