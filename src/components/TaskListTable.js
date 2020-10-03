@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Redirect } from 'react-router-dom';
 import Alert from './Alert';
 import AuthService from '../api/AuthService';
+import Spinner from './Spinner';
 
 class TaskListTable extends Component {
     constructor(props){
@@ -12,7 +13,8 @@ class TaskListTable extends Component {
 
         this.state = {
             tasks: [],
-            editId: 0
+            editId: 0,
+            loading: false
         }
 
         this.onDeleteHandler = this.onDeleteHandler.bind(this);
@@ -31,21 +33,23 @@ class TaskListTable extends Component {
 
         return (
                 <>
-                    <Alert message="Este e um alerta de teste"/>
-                    <table className="table table-striped">
-                        <TableHeader />
-                        {this.state.tasks.length > 0 ?
-                            <TableBody tasks={this.state.tasks} 
-                                        onDelete={this.onDeleteHandler}
-                                        onEdit={this.onEditHandler}
-                                        onStatusChange={this.onStatusChange}
-                                        />
-                            :
-                            <EmptyTableBody />
-                        }
-                        
-                    </table>
+                    { this.state.loading ?  <Spinner /> : 
+                        <table className="table table-striped">
+                            <TableHeader />
+                            {this.state.tasks.length > 0 ?
+                                <TableBody tasks={this.state.tasks} 
+                                            onDelete={this.onDeleteHandler}
+                                            onEdit={this.onEditHandler}
+                                            onStatusChange={this.onStatusChange}
+                                            />
+                                :
+                                <EmptyTableBody />
+                            }
+                            
+                        </table>
+                    }
                     <ToastContainer autoClose={1500} />
+                    
                 </>
         );
     }
