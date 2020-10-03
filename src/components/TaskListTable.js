@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import Alert from './Alert';
 import AuthService from '../api/AuthService';
 import Spinner from './Spinner';
+import Moment from 'react-moment';
 
 class TaskListTable extends Component {
     constructor(props){
@@ -14,7 +15,8 @@ class TaskListTable extends Component {
         this.state = {
             tasks: [],
             editId: 0,
-            loading: false
+            loading: false,
+            alert: null
         }
 
         this.onDeleteHandler = this.onDeleteHandler.bind(this);
@@ -33,6 +35,8 @@ class TaskListTable extends Component {
 
         return (
                 <>
+                    <h1>Lista de Tarefas</h1>
+                    { this.state.alert != null ? <Alert message={this.state.alert} /> : "" }
                     { this.state.loading ?  <Spinner /> : 
                         <table className="table table-striped">
                             <TableHeader />
@@ -59,7 +63,19 @@ class TaskListTable extends Component {
     }
  
     listTasks(){
-        this.setState({ tasks: TaskService.list() })
+        if (!AuthService.isAuthenticated){
+            return;
+        }
+
+        this.setState({ loading: true });
+        TaskService.list(
+            tasks => this.setState({ tasks: tasks, loading: false }),
+            error => this.setErrorState(error)
+        )
+    }
+
+    setErrorState(error){
+        this.setState({ alert: `Erro na requisicao: ${error.message}`, loading: false });
     }
 
     onDeleteHandler(id){
@@ -108,7 +124,10 @@ const TableBody = (props) => {
                         />
                 </td>
                 <td>{task.done ? <s>{task.description}</s> : task.description}</td>
-                <td>{task.done ? <s>{task.whenToDo}</s> : task.whenToDo}</td>
+                <td>{task.done ? 
+                                <s><Moment format="DD/MM/YYYY">{task.whenToDo}</Moment></s> 
+                                : <Moment format="DD/MM/YYYY">{task.whenToDo}</Moment>}
+                </td>
                 <td>
                     <input type="button" 
                             className="btn btn-primary"
