@@ -26,10 +26,13 @@ class TaskForm extends Component {
         this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
     }
 
+
     onSubmitHandler(event){
         event.preventDefault(); // Previne o refresh da tela
-        TaskService.save(this.state.task);
-        this.setState({ redirect: true });
+        TaskService.save(this.state.task,
+            () => this.setState({ redirect: true }),
+            error => this.setState({ alert: error.response.data.error, loading: false })
+        );
     }
 
     onInputChangeHandler(event) {
