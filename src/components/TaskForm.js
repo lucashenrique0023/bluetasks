@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import AuthService from '../api/AuthService';
 import TaskService from '../api/TaskService';
 
 class TaskForm extends Component {
@@ -43,6 +44,9 @@ class TaskForm extends Component {
     }
 
     render() {
+        if (!AuthService.isAuthenticated()){
+            return <Redirect to="/login" />
+        }
 
         if (this.state.redirect){
             return <Redirect to="/" />

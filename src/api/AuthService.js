@@ -16,6 +16,17 @@ class AuthService {
             });
             
     }
+
+    getJWTToken(){
+        let a = sessionStorage.getItem(JWT_TOKEN_NAME);
+        return a;
+    }
+
+    isAuthenticated(){
+        let a = this.getJWTToken() != null;
+        return a;
+    }
+
 }
 
 export default new AuthService();
