@@ -28,7 +28,6 @@ class AuthService {
         }
 
         const jwtTokenData = atob(jwtToken.split(".")[1]);
-        console.log(jwtTokenData);
         return JSON.parse(jwtTokenData);
     }
 

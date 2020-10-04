@@ -20,7 +20,7 @@ class TaskListTable extends Component {
         }
 
         this.onDeleteHandler = this.onDeleteHandler.bind(this);
-        this.onStatusChange = this.onStatusChange.bind(this);
+        this.onStatusChangeHandler = this.onStatusChangeHandler.bind(this);
         this.onEditHandler = this.onEditHandler.bind(this);
     }
 
@@ -44,7 +44,7 @@ class TaskListTable extends Component {
                                 <TableBody tasks={this.state.tasks} 
                                             onDelete={this.onDeleteHandler}
                                             onEdit={this.onEditHandler}
-                                            onStatusChange={this.onStatusChange}
+                                            onStatusChange={this.onStatusChangeHandler}
                                             />
                                 :
                                 <EmptyTableBody />
@@ -63,7 +63,7 @@ class TaskListTable extends Component {
     }
  
     listTasks(){
-        if (!AuthService.isAuthenticated){
+        if (!AuthService.isAuthenticated()){
             return;
         }
 
@@ -96,10 +96,15 @@ class TaskListTable extends Component {
         this.setState({editId: id})
     }
 
-    onStatusChange(task){
+    onStatusChangeHandler(task){
         task.done = !task.done;
-        TaskService.save(task);
-        this.listTasks();
+    
+        TaskService.save(task,
+            () => {
+                const tasks = this.state.tasks.map(t => t.id !== task.id ? t : task);
+                this.setState({ tasks: tasks });
+            },
+            (error => this.setErrorState(error)));
     }
 
 }

@@ -29,13 +29,11 @@ class Login extends Component {
 
     loginResponseHandle(success){
         if (success){
-            this.setState({ loggedIn: true });
+            this.setState({ loggedIn: true, processing: false });
             this.props.onLoginSuccess();
         } else {
-            this.setState({ alert: "O Login Falhou!"})
+            this.setState({ alert: "O Login Falhou!", processing: false })
         }
-
-        this.setState({processing: false});
     }
 
     inputChangeHandle(event){
@@ -45,11 +43,7 @@ class Login extends Component {
     }
 
     render() {
-        if (AuthService.isAuthenticated()){
-            return <Redirect to="/" />
-        }
-
-        if (this.state.loggedIn){
+        if (AuthService.isAuthenticated() || this.state.loggedIn){
             return <Redirect to="/" />
         }
 
