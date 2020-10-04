@@ -21,6 +21,17 @@ class AuthService {
         sessionStorage.removeItem(JWT_TOKEN_NAME);
     }
 
+    getJWTTokenData() {
+        const jwtToken = this.getJWTToken();
+        if (jwtToken == null){
+            return null;
+        }
+
+        const jwtTokenData = atob(jwtToken.split(".")[1]);
+        console.log(jwtTokenData);
+        return JSON.parse(jwtTokenData);
+    }
+
     getJWTToken(){
         let a = sessionStorage.getItem(JWT_TOKEN_NAME);
         return a;
