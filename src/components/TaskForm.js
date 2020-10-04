@@ -19,19 +19,32 @@ class TaskForm extends Component {
             redirect: false,
             buttonName: "Cadastrar",
             alert: null,
-            loading: false
+            loading: false,
+            saving : false
         }
 
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
         this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
     }
 
+    setErrorState(error){
+        this.setState({ alert: error, loading: false, saving: false })
+    }
 
     onSubmitHandler(event){
         event.preventDefault(); // Previne o refresh da tela
+        this.setState({ saving: true, alert: null })
         TaskService.save(this.state.task,
-            () => this.setState({ redirect: true }),
-            error => this.setState({ alert: error.response.data.error, loading: false })
+            () => this.setState({ redirect: true, saving: false }),
+            error => {
+                if (error.response){
+                    this.setErrorState(`Erro: ${error.response.data.error}`);
+                } else {
+                    this.setErrorState(`Erro na requisicao: ${error.message}`);
+                }
+            }
+            
+            
         );
     }
 
@@ -97,7 +110,17 @@ class TaskForm extends Component {
                                 value={this.state.task.whenToDo}
                                 onChange={this.onInputChangeHandler} />
                     </div>
-                     <button type="submit" className="btn btn-primary">{this.state.buttonName}</button>
+                     <button type="submit" 
+                            className="btn btn-primary"
+                            disabled={this.state.saving}>
+                            {this.state.saving ? 
+                                <span className="spinner-border spinner-border-sm"
+                                    role="status" aria-hidden="true">
+                                </span>
+                                : 
+                                this.state.buttonName
+                            }
+                    </button>
                     &nbsp; &nbsp;
                     <button 
                         type="button" 
