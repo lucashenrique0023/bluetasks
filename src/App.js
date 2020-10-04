@@ -6,9 +6,15 @@ import TaskForm from './components/TaskForm';
 import TaskListTable from './components/TaskListTable';
 
 class App extends Component {
-  //constructor(props){
-    
-  //}
+  constructor(props){
+    super(props)
+
+    this.onRefreshHandler = this.onRefreshHandler.bind(this);
+  }
+
+  onRefreshHandler() {
+    this.forceUpdate();
+  }
 
   render() {
     return (
@@ -17,7 +23,7 @@ class App extends Component {
           <NavBar/>
           <div className="container" style={{ marginTop: 20 }}>
             <Switch>
-              <Route path="/login" exact component={ Login } />
+              <Route path="/login" exact render={() => <Login onLoginSuccess={this.onRefreshHandler} />} />
               <Route path="/form" exact component={ TaskForm } />
               <Route path="/form/:id" exact component={ TaskForm } />
               <Route path="/" component={ TaskListTable } />
