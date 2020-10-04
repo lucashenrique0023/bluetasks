@@ -17,6 +17,10 @@ class AuthService {
             
     }
 
+    logout() {
+        sessionStorage.removeItem(JWT_TOKEN_NAME);
+    }
+
     getJWTToken(){
         let a = sessionStorage.getItem(JWT_TOKEN_NAME);
         return a;
