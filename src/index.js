@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import Title from './hooktest/Title';
+import Counter from './hooktest/Counter';
 
 // ReactDOM.render(
 //   <React.StrictMode>
@@ -12,7 +11,7 @@ import Title from './hooktest/Title';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Title />
+    <Counter />
   </React.StrictMode>,
   document.getElementById('root')
 );
