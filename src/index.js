@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Counter from './hooktest/Counter';
+import CounterComposed from './hooktest/CounterComposed';
 
 // ReactDOM.render(
 //   <React.StrictMode>
@@ -11,7 +11,7 @@ import Counter from './hooktest/Counter';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Counter />
+    <CounterComposed />
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import useCounter from './useCounter';
+import { CounterContext } from './CounterComposed'
 
 const Counter = () => {
-    const counter = useCounter();
+    const counter = useContext(CounterContext);
 
     return (
         <div className="App">
