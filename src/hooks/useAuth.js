@@ -1,6 +1,8 @@
 const { default: Axios } = require("axios");
-const { useState, useEffect } = require("react");
+const { useState, useEffect, createContext } = require("react");
 const { AUTH_ENDPOINT, CREDENTIALS_NAME } = require("../constants");
+
+export const AuthContext = createContext();
 
 export const useAuth = () => {
     const [ credentials, setCredentials ] = useState({ username: null, displayName: null, token: null});
