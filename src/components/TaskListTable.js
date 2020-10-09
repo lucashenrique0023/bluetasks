@@ -25,14 +25,25 @@ const TaskListTable = () => {
         }
     }
 
+    const onStatusChangeHandler = (taskToUpdate) => {
+        taskToUpdate.done = !taskToUpdate.done;
+        tasks.save(taskToUpdate, true);
+    }
+
     useEffect(() => {
         if (tasks.taskRemoved !== null) {
             toast.success(`Tarefa ${tasks.taskRemoved.id} excluida!`, 
             { position: toast.POSITION.BOTTOM_LEFT});
             tasks.clearTaskRemoved();
         }
+
+        if (tasks.taskUpdated !== null) {
+            toast.success(`Tarefa ${tasks.taskUpdated.id} foi marcada como ${!tasks.taskUpdated.done ? "nao" : ""} concluida!`, 
+            { position: toast.POSITION.BOTTOM_LEFT});
+            tasks.clearTaskUpdated();
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    } , [ tasks.taskRemoved ])
+    } , [ tasks.taskRemoved, tasks.taskUpdated ])
 
     if (!auth.isAuthenticated()){
         return <Redirect to="/login" />
@@ -60,7 +71,7 @@ const TaskListTable = () => {
                                     <td>
                                         <input type="checkbox"
                                             checked={task.done}
-                                            onChange={(event) => false}
+                                            onChange={() => onStatusChangeHandler(task)}
                                             />
                                     </td>
                                     <td>{task.done ? <s>{task.description}</s> : task.description}</td>
